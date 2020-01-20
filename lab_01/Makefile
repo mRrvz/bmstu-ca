@@ -9,4 +9,4 @@ clean:
 	rm *.o *.hi *.exe *.out
 
 run: build
-	./$(APPNAME)
+	./$(APPNAME) 1.5 3 intpol
