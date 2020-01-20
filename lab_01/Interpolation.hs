@@ -13,7 +13,7 @@ initialConditions findType
     | findType == "intpol"  = (xs, ys)
     | findType == "squares" = (ys, xs)
     where xs = [1..20]
-          ys = [x * x - 4| x <- xs]
+          ys = [x * x| x <- xs]
 
 slice :: [(Double, Double)] -> Int -> Int -> [(Double, Double)]
 slice table n pos = take n $ drop pos table
@@ -30,9 +30,9 @@ takeApproximation table x0 n
 
 createTable :: [Double] -> [Double] -> Int -> [[Double]]
 createTable _ (_:[]) _ = []
-createTable xs ys step =  (sepDifference xs ys step) : createTable xs (sepDifference xs ys step) (step + 1)
-    where sepDifference _ (_:[]) _ = []
-          sepDifference xs ys step = ((ys !! 1) - (ys !! 0)) / ((xs !! (1 + step)) - (xs !! 0)) : sepDifference (tail xs) (tail ys) step
+createTable xs ys step =  divDiff xs ys step : createTable xs (divDiff xs ys step) (step + 1)
+    where divDiff _ (_:[]) _ = []
+          divDiff xs ys step = (ys !! 1 - ys !! 0) / (xs !! (1 + step) - xs !! 0) : divDiff (tail xs) (tail ys) step
 
 interpolation :: [Double] -> [[Double]] -> Double -> Double
 interpolation xs [] x = 0
