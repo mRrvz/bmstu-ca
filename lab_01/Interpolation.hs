@@ -2,16 +2,17 @@ module Interpolation (
     initialConditions,
     takeApproximation,
     createTable,
-    interpolation
+    newtonPolynomial
 ) where
 
 import Data.List
 import Data.Maybe
+import Data.Sort
 
 initialConditions :: [Char] -> ([Double], [Double])
 initialConditions findType
     | findType == "intpol"  = (xs, ys)
-    | findType == "squares" = (ys, xs)
+    | findType == "back-intpol" = unzip $ sortOn fst $ zip ys xs
     where xs = [1..20]
           ys = [x * x| x <- xs]
 
@@ -34,6 +35,6 @@ createTable xs ys step =  divDiff xs ys step : createTable xs (divDiff xs ys ste
     where divDiff _ (_:[]) _ = []
           divDiff xs ys step = (ys !! 1 - ys !! 0) / (xs !! (1 + step) - xs !! 0) : divDiff (tail xs) (tail ys) step
 
-interpolation :: [Double] -> [[Double]] -> Double -> Double
-interpolation xs [] x = 0
-interpolation xs table x = ((head $ head table) + interpolation (tail xs) (tail table) x) * (x - head xs)
+newtonPolynomial :: [Double] -> [[Double]] -> Double -> Double -> Double
+newtonPolynomial xs table x0 y0 = foldl (\x y -> x + fst y * snd y) y0 $ zip (map head table) xDifference
+  where xDifference = reverse $ init $ foldl (\x y -> (x0 - y) * head x : x) [1] xs
