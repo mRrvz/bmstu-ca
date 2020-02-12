@@ -1,16 +1,14 @@
+import Interpolation
 import System.IO
 import System.Environment
 import Data.List
-import Interpolation
 
 main :: IO ()
 main = do
     (x:n:findType) <- getArgs
-    let (xs, ys) = initialConditions $ head findType
-        approx = unzip $ takeApproximation (zip xs ys) (read x) (read n)
-        table = createTable (fst approx) (snd approx) 0
+    let table = initialConditions $ head findType
 
     putStr "Результат вычислений: "
-    print $ newtonPolynomial (fst approx) table (read x) (head $ snd approx)
-    putStrLn "Таблица: \n| x | y | Разделенные разности |"
-    mapM_ print $ transpose $ fst approx : snd approx : table
+    case head findType of
+      "bisection" -> print $ bisection table (read n)
+      _ -> print $ newtonPolynomial table (read x) (read n)
