@@ -16,13 +16,13 @@ epsilon :: Double
 epsilon = 1e-4
 
 f :: Double -> Double
-f x = x * x - 4
+f x = x * x
 
 initialConditions :: String -> TableXY
 initialConditions findType
     | findType == "back-intpol" = sortOn fst $ zip ys xs
     | otherwise = zip xs ys
-    where xs = [0..1000]
+    where xs = [1..20]
           ys = map f xs
 
 slice :: TableXY -> Int -> Int -> TableXY
@@ -46,7 +46,7 @@ createMatrix xs ys step =  divDiff xs ys step : createMatrix xs (divDiff xs ys s
 
 newtonPolynomial :: TableXY -> Double -> Int -> Double
 newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
-  where approximation = unzip $ takeApproximation table x0 n
+  where approximation = unzip $ takeApproximation table x0 (n + 1)
         matrix = createMatrix (fst approximation) (snd approximation) 0
         y0 = head $ snd approximation
         xDifference = reverse $ init $ foldl (\x y -> (x0 - y) * head x : x) [1] (fst approximation)
