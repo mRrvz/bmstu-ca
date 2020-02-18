@@ -54,7 +54,7 @@ newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
 
 bisection' :: Point -> Point -> TableXY -> Int -> Double
 bisection' left right table n
-  | fst right - fst left < epsilon = middle
+  | fst right - fst left < epsilon * middle + epsilon = middle
   | approximation * snd right <= 0 = bisection' (middle, approximation) right table n
   | otherwise = bisection' left (middle, approximation) table n
     where
