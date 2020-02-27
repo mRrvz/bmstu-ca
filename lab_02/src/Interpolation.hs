@@ -46,5 +46,9 @@ newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
         pairs = zip (map head matrix) xDifference
 
 
-multidemInterpolation :: Table -> Point -> (Int, Int) -> Double
-multidemInterpolation a b c = 228.1
+multidemInterpolation :: Table -> Point -> (Int, Int) -> [TableXY]
+multidemInterpolation table pt n = helper'
+    where
+        xs = tail $ head (valueMatrix table)
+        helper = map (\x -> zip xs (tail x)) (tail (valueMatrix table))
+        helper' = map (\x -> takeApproximation x (fst pt) (fst n + 1)) helper
