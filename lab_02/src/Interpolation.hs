@@ -1,22 +1,17 @@
 module Interpolation (
-    newtonPolynomial,
-    multidemInterpolation
+    interpolation2
 ) where
 
 import Data.List
 import Data.Maybe
-import Data.Sort
-import Parse (Table (..))
 
 type TableXY = [(Double, Double)]
-type Point = (Double, Double)
 type Matrix = [[Double]]
+type ValueTable = [[Double]]
 
-epsilon :: Double
-epsilon = 1e-4
+type Point = (Double, Double)
+type PolynomDegrees = (Int, Int)
 
-f :: Double -> Double -> Double
-f x y = x * x + y * y
 
 slice :: TableXY -> Int -> Int -> TableXY
 slice table n pos = take n $ drop pos table
@@ -38,7 +33,7 @@ createMatrix xs ys step =  divDiff xs ys step : createMatrix xs (divDiff xs ys s
           divDiff xs ys step = (ys !! 1 - ys !! 0) / (xs !! (1 + step) - xs !! 0) : divDiff (tail xs) (tail ys) step
 
 newtonPolynomial :: TableXY -> Double -> Int -> Double
-newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
+newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 pairs
   where approximation = unzip $ takeApproximation table x0 (n + 1)
         matrix = createMatrix (fst approximation) (snd approximation) 0
         y0 = head $ snd approximation
@@ -46,9 +41,16 @@ newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
         pairs = zip (map head matrix) xDifference
 
 
-multidemInterpolation :: Table -> Point -> (Int, Int) -> [TableXY]
-multidemInterpolation table pt n = helper'
+interpolation2 :: ValueTable -> Point -> PolynomDegrees -> Double
+interpolation2 table pt n = result
     where
-        xs = tail $ head (valueMatrix table)
-        helper = map (\x -> zip xs (tail x)) (tail (valueMatrix table))
-        helper' = map (\x -> takeApproximation x (fst pt) (fst n + 1)) helper
+        xBorder = tail $ head table
+        xColPairs = map (\x -> zip xBorder $ tail x) $ tail table
+        xApprox = map (\x -> takeApproximation x (fst pt) $ fst n + 1) xColPairs
+
+        yBorder = map head $ tail table
+        yApprox = reverse $ takeApproximation (zip yBorder yBorder) (snd pt) $ snd n + 1
+        xyApprox = map (\x -> (fst x, xApprox !! (round $ fst x - 1))) yApprox
+
+        finApprox = map (\x -> (fst x, newtonPolynomial (snd x) (fst pt) (length finApprox))) xyApprox
+        result = newtonPolynomial finApprox (snd pt) (length finApprox)

@@ -1,28 +1,21 @@
 module Parse (
-    Table (..),
     parseTable,
-    toIntTuple,
-    toDoubleTuple
+    toDouble,
+    toInt,
+    tuple
 ) where
 
-data Table = Table {
-    valueMatrix :: [[Double]],
-    l :: Int,
-    m :: Int
-} deriving (Show)
+type ValueTable = [[Double]]
 
-parseTable :: [String] -> Table
-parseTable stringTable = Table {valueMatrix = value, l = l, m = m}
-    where
-        strDigits = map words stringTable
-        l = read (head $ head strDigits) :: Int
-        m = read (last $ head strDigits) :: Int
-        value = map (map (\x -> read x :: Double)) (tail strDigits)
+parseTable :: [String] -> ValueTable
+parseTable = map (map (\x -> read x :: Double)) . map words
 
-toIntTuple :: [String] -> (Int, Int)
-toIntTuple list = (head numbersList, last numbersList)
-    where numbersList = map (\x -> read x :: Int) list
+toDouble :: String -> Double
+toDouble x = read x :: Double
 
-toDoubleTuple :: [String] -> (Double, Double)
-toDoubleTuple list = (head numbersList, last numbersList)
-    where numbersList = map (\x -> read x :: Double) list
+toInt :: String -> Int
+toInt x = read x :: Int
+
+tuple :: [String] -> (String -> a) -> (a, a)
+tuple list f = (head numbersList, last numbersList)
+    where numbersList = map f list

@@ -22,8 +22,8 @@ initialConditions :: String -> TableXY
 initialConditions findType
     | findType == "back-intpol" = sortOn fst $ zip ys xs
     | otherwise = zip xs ys
-    where xs = [1..20]
-          ys = map f xs
+    where xs = [2, 3, 4]
+          ys = [6.25, 11.25, 18.25]
 
 slice :: TableXY -> Int -> Int -> TableXY
 slice table n pos = take n $ drop pos table
@@ -45,7 +45,7 @@ createMatrix xs ys step =  divDiff xs ys step : createMatrix xs (divDiff xs ys s
           divDiff xs ys step = (ys !! 1 - ys !! 0) / (xs !! (1 + step) - xs !! 0) : divDiff (tail xs) (tail ys) step
 
 newtonPolynomial :: TableXY -> Double -> Int -> Double
-newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 $ pairs
+newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 pairs
   where approximation = unzip $ takeApproximation table x0 (n + 1)
         matrix = createMatrix (fst approximation) (snd approximation) 0
         y0 = head $ snd approximation
