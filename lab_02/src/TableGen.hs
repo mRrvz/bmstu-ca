@@ -1,5 +1,5 @@
 f :: Double -> Double -> Double
-f x y = x * x  + y * y * y
+f x y = x * x  + y * y 
 
 xs :: [Double]
 xs = [1..10]

@@ -12,7 +12,6 @@ type ValueTable = [[Double]]
 type Point = (Double, Double)
 type PolynomDegrees = (Int, Int)
 
-
 slice :: TableXY -> Int -> Int -> TableXY
 slice table n pos = take n $ drop pos table
 
@@ -39,7 +38,6 @@ newtonPolynomial table x0 n = foldl (\x y -> x + fst y * snd y) y0 pairs
         y0 = head $ snd approximation
         xDifference = reverse $ init $ foldl (\x y -> (x0 - y) * head x : x) [1] (fst approximation)
         pairs = zip (map head matrix) xDifference
-
 
 interpolation2 :: ValueTable -> Point -> PolynomDegrees -> Double
 interpolation2 table pt n = result
