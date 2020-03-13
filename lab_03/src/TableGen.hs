@@ -3,5 +3,5 @@ fromPairs pair = (show $ fst pair) ++ " " ++ (show $ snd pair) ++ "\n"
 
 main :: IO ()
 main = writeFile "table.csv" $ foldl1 (++) $ map fromPairs $ zip xs $ map f xs
-    where xs = [1,3..20]
+    where xs = [0..10]
           f x = x * x

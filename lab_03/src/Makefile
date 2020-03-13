@@ -5,7 +5,7 @@ APPNAME := app.exe
 build:
 	$(CC) -o $(APPNAME) --make $(MAIN)
 
-table_generator:
+table:
 	$(CC) -o gen.exe  --make TableGen.hs
 
 clean:

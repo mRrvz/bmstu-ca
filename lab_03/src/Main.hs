@@ -10,10 +10,8 @@ main = do
     mapM_ print table
     hClose handle
 
-    putStrLn "Введите X0 и искомый Y: "
+    putStrLn "Введите X:"
     x0 <- fmap toDouble getLine
 
     putStr "Результат вычислений: "
     print $ spline table x0
-    --mapM_ print $ map length (spline table point)
-    --print $ interpolation2 table (tuple point toDouble) (tuple degrees toInt)
