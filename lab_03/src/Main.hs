@@ -10,8 +10,8 @@ main = do
     mapM_ print table
     hClose handle
 
-    putStrLn "Введите X:"
+    putStrLn "Enter X:"
     x0 <- fmap toDouble getLine
 
-    putStr "Результат вычислений: "
+    putStr "Result: "
     print $ spline table x0

@@ -1,6 +1,8 @@
 dist
 dist-*
 cabal-dev
+*.log
+*.gz
 *.o
 *.hi
 *.hie
