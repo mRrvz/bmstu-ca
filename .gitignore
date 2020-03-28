@@ -13,6 +13,7 @@ cabal-dev
 .hpc
 .hsenv
 .cabal-sandbox/
+LaTex/
 cabal.sandbox.config
 *.prof
 *.aux
