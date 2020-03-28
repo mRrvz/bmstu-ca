@@ -26,6 +26,7 @@
 \usepackage{listings}
 \usepackage{courier}
 \usepackage{multirow}
+\usepackage{graphicx}
 
 \lstset{basicstyle=\fontsize{10}{10}\selectfont,breaklines=true}
 
@@ -158,9 +159,78 @@ $$(y, x^k) = \sum_{i=1}^{N}\rho_{i}y_{i}x_{i}^{k}$$\newline
 \clearpage % разрыв страницы
 
 \section{Результаты работы программы}
+\noindent\textbf{1.} Веса точек одинаковы и равны.
 
+\begin{center}
+Исходная таблица: 
+
+\begin{center}
+	\begin{tabular}{ | l | l | l | p{1cm} |}
+		\hline
+		$x_{i}$ & $y_{i}$ & $\rho_{i}$ \\ \hline
+		1 & 1 & 1 \\ \hline
+		2 & 4 & 1 \\ \hline
+		3 & 9 & 1 \\ \hline
+		4 & 16 & 1 \\ \hline
+		5 & 25 & 1 \\ \hline
+		6 & 36 & 1 \\ \hline
+		7 & 49 & 1 \\ \hline
+		8 & 64 & 1 \\ \hline
+		9 & 81 & 1 \\ \hline					
+		10 & 100 & 1 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\includegraphics[scale=0.5]{../../src/n1w1.png} \newline
+\includegraphics[scale=0.5]{../../src/n2w1.png} \newline
+\includegraphics[scale=0.5]{../../src/n6w1.png} \newline
+\end{center}
+
+\clearpage
+\noindent\textbf{2.} Веса точек разные.
+
+\begin{center}
+	Исходная таблица: 
+	
+	\begin{center}
+		\begin{tabular}{ | l | l | l | p{1cm} |}
+			\hline
+			$x_{i}$ & $y_{i}$ & $\rho_{i}$ \\ \hline
+			1 & 1 & 1 \\ \hline
+			2 & 4 & 1 \\ \hline
+			3 & 9 & 1 \\ \hline
+			4 & 16 & 1 \\ \hline
+			5 & 25 & 1 \\ \hline
+			6 & 36 & 1 \\ \hline
+			7 & 49 & 1 \\ \hline
+			8 & 64 & 1 \\ \hline
+			9 & 81 & 1 \\ \hline					
+			10 & 100 & 1 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\includegraphics[scale=0.5]{../../src/n1w1.png} \newline
+	\includegraphics[scale=0.5]{../../src/n2w1.png} \newline
+	\includegraphics[scale=0.5]{../../src/n6w1.png} \newline
+\end{center}
+
+\clearpage
 \section{Ответы на вопросы для защиты ЛР}
+\noindent\textbf{1.} Что произойдет при задании  степени полинома $n = N-1$\newline
 
+\noindent\textbf{2.} Будет ли работать Ваша программа при $ n >= N$? Что именно в алгоритме требует отдельного анализа данного случая и может привести к аварийной остановке?\newline
+
+\noindent\textbf{3.} Получить формулу для коэффициента  полинома $a_{0}$  при степени полинома $n = 0$. Какой смысл имеет  величина, которую представляет данный коэффициент?\newline
+
+\noindent\textbf{4.} Записать и вычислить определитель матрицы СЛАУ для нахождения коэффициентов полинома для случая, когда  $n=N=2$. \newline
+
+\noindent\textbf{5.} Построить СЛАУ при выборочном задании степеней аргумента полинома $\varphi(x) = a_{0} + a_{1}x^m + a_{2}x^n$, причем степени n и m в этой формуле известны. \newline
+
+\noindent\textbf{6.} Решить задачу из вопроса 5, если степени n и m подлежат определению наравне с коэффициентами $a_{k}$, т.е. количество неизвестных равно 5. \newline
+
+\clearpage
 \section{Код программы}
 \noindent\textbf{Файл Main.hs:}
 \lstinputlisting[language=Haskell]{../../src/Main.hs}
