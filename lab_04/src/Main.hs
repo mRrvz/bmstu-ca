@@ -4,25 +4,13 @@ import Plot
 import Approximation
 import System.IO
 
-f :: [Double] -> Double -> Double
-f coeffs x = sum $ zipWith (*) coeffs (map (\y -> x ^ y) [0..length coeffs - 1])
+printRow :: ((Double, Double), Double) -> IO ()
+printRow row = putStrLn $ show (fst $ fst row) ++ " " ++ show (snd $ fst row) ++ " " ++ show (snd row)
 
 main :: IO ()
 main = do
-    handle <- openFile "table.csv" ReadMode
-    content <- hGetContents handle
-    let table = parseTable $ lines content
-    --mapM_ print table
-    hClose handle
-
-    putStrLn "Enter n:"
-    n <- fmap toInt getLine
-    let table = [[1, 1], [2, 2], [3, 1], [4, 2], [5, 1], [6, 2]]
-    let w = take 6 $ repeat 1
-    --print $ gauss [[5, 7, 6, 11], [3, 16, 19, 13], [13, 10, 7, 12]]
-    print $ quadraticApproximation table w $ n + 1
-    let coeffs = quadraticApproximation table w $ n + 1
-    plotApproximation (f coeffs) [(1,1), (2,2), (3, 1), (4, 2), (5, 1), (6, 2)]
-
-    --putStr "Result: "
-    --print $ spline table x0
+    table <- openFile "table.csv" ReadMode >>= hGetContents >>= return . parseTable . lines
+    putStrLn "X   Y   P" >> mapM_ printRow (zip (xy table) $ weight table) >> putStrLn "Enter n:"
+    coeffs <- fmap toInt getLine >>= return . (+ 1) >>= return . quadraticApproximation table
+    print coeffs
+    plotApproximation (f coeffs) $ xy table
