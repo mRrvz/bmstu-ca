@@ -10,7 +10,7 @@
 | [№1. Полином Ньютона](https://github.com/mRrvz/bmstu-ca/tree/master/lab_01) | ✅ |
 | [№2. Многомерная интерполяция](https://github.com/mRrvz/bmstu-ca/tree/master/lab_02) | ✅ |
 | [№3. Интерполяция сплайном](https://github.com/mRrvz/bmstu-ca/tree/master/lab_03) | ✅ |
-| [№4. Среднеквартичное приближение]((https://github.com/mRrvz/bmstu-ca/tree/master/lab_04)  | ✅ |
+| [№4. Среднеквартичное приближение](https://github.com/mRrvz/bmstu-ca/tree/master/lab_04)  | ✅ |
 | [№5.](https://github.com/mRrvz/bmstu-ca/tree/master/lab_05) | ⛔ |
 | [№6.](https://github.com/mRrvz/bmstu-ca/tree/master/lab_06) | ⛔ |
 
