@@ -60,14 +60,14 @@ gauss x m tau limits = (d limits - c limits) * sum' / 2
           ys = map (value (c limits) $ d limits) roots
           sum' = foldr (\y acc -> acc + (snd y * f x (fst y) tau)) 0 $ zip ys $ getCoeffs roots
 
-gauss2 :: N -> M -> Tau -> Limits -> Double
-gauss2 n m tau limits = (b limits - a limits) * sum' / 2
+gauss2 :: Limits -> Tau -> N -> M -> Double
+gauss2 limits tau n m = (b limits - a limits) * sum' / 2
     where roots = legendreRoots (n + 1) eps
           xs = map (value (c limits) (d limits)) roots
           sum' = foldr (\x acc -> acc + (snd x * (gauss (fst x) m tau limits))) 0 $ zip xs $ getCoeffs roots
 
-simpson2 :: N -> M -> Tau -> Limits -> Double
-simpson2 n m tau limits = h / 3 * sum_of
+simpson2 :: Limits -> Tau -> N -> M -> Double
+simpson2 limits tau n m = h / 3 * sum_of
     where h = (b limits - a limits) / (fromIntegral n)
           steps = take (n `div` 2) [a limits, a limits + 2 * h..10000]
           gauss' a = gauss a m tau limits
