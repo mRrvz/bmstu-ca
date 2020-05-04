@@ -3,17 +3,10 @@ module Simpson (
     limits
 ) where
 
+import Gauss
+
 type N = Int
 type M = Int
-
-data Limits = Limits { a :: Double,
-                       b :: Double,
-                       c :: Double,
-                       d :: Double
-                     } deriving (Show)
-
-limits :: Limits
-limits = Limits 0.0 (pi / 2) 0.0 (pi / 2)
 
 simpson :: N -> M -> Limits -> Double
 simpson n m limits = (h * sum_of) / 3

@@ -3,9 +3,7 @@ module Gauss (
     getCoeffs
 ) where
 
---import Simpson
 import Math.Polynomial.Legendre
-import Debug.Trace
 
 type M = Int
 type Index = Int
@@ -14,6 +12,15 @@ type Tau = Double
 type Matrix = [[Double]]
 type Coeffs = [Double]
 type Roots = [Double]
+
+data Limits = Limits { a :: Double,
+                       b :: Double,
+                       c :: Double,
+                       d :: Double
+                     } deriving (Show)
+
+limits :: Limits
+limits = Limits 0.0 (pi / 2) 0.0 (pi / 2)
 
 subtractRow :: [Double] -> [Double] -> [Double]
 subtractRow subRow row = map (\x -> fst x - snd x * (head row / head subRow)) $ zip row subRow
@@ -36,23 +43,30 @@ getKi ind
 getCoeffs :: Roots -> Coeffs
 getCoeffs roots = gaussSLE $ foldr (\x acc -> ((map (^x) roots) ++ [getKi x]) : acc) [] [0..length roots - 1]
 
-{-
 eps :: Double
 eps = 0.001
 
-f :: Tau -> Double -> Double -> Double
-f tau phi theta = (1 - (exp * (-tau * 2 * cos phi) / (1 - sin phi * sin phi * cos theta * cos theta))) * cos phi * sin phi
+f :: Double -> Double -> Tau -> Double
+f phi theta tau = (1 - ((exp 1) * (-tau * 2 * (cos phi)) /
+    (1 - (sin phi) * (sin phi) * (cos theta) * (cos theta)))) * (cos phi) * (sin phi)
 
-value :: Int -> Int -> Double -> Double
-value a b root = (a + b) / 2 + root * (b - a) / 2
+sumDouble :: Double -> Double -> Double
+sumDouble a b = (a + b)
+
+diffDouble :: Double -> Double -> Double
+diffDouble a b =  (b - a)
+
+value :: Double -> Double -> Double -> Double
+value a b root = (sumDouble a  b) / 2 + root * (diffDouble a b) / 2
 
 gauss :: M -> Index -> Tau -> Limits -> Double
 gauss m ind tau limits = h *  sum_of
     where roots = legendreRoots m eps
-          a = a limits
-          b = b limits
-          c = c limits
-          d = d limits
-          h = (d - c) / 2
-          sum_of = foldr1 (\x acc -> snd x * f tau (value a b $ fst x) (value c d $ fst x)) $ zip roots a_coeffs
--}
+          a_ = a limits
+          b_ = b limits
+          c_ = c limits
+          d_ = d limits
+          h = (d_ - c_) / 2
+          a_coeffs = getCoeffs roots
+          --sum_of = sum a_coeffs
+          sum_of = foldr (\x acc -> acc + (snd x * f (value a_ b_ $ fst x) (value c_ d_ $ fst x) tau)) 0 $ zip roots a_coeffs
