@@ -28,7 +28,7 @@ eps = 0.001
 
 f :: Double -> Double -> Tau -> Double
 f phi theta tau = 4 / pi * ((1 - exp(-tau * ((2 * cos phi) /
-    (1 - (sin phi)^2 * (cos theta)^2)))) * (cos phi) * (sin phi))
+    (1 - (sin phi)^2 * (cos theta)^2)))) * (cos phi) * sin phi)
 
 subtractRow :: [Double] -> [Double] -> [Double]
 subtractRow subRow row = map (\x -> fst x - snd x * (head row / head subRow)) $ zip row subRow
@@ -64,7 +64,9 @@ gauss2 :: Limits -> Tau -> N -> M -> Double
 gauss2 limits tau n m = (b limits - a limits) * sum' / 2
     where roots = legendreRoots (n + 1) eps
           xs = map (value (c limits) (d limits)) roots
-          sum' = foldr (\x acc -> acc + (snd x * (gauss (fst x) m tau limits))) 0 $ zip xs $ getCoeffs roots
+          sum' = foldr (
+            \x acc ->
+                acc + (snd x * (gauss (fst x) m tau limits))) 0 $ zip xs $ getCoeffs roots
 
 simpson2 :: Limits -> Tau -> N -> M -> Double
 simpson2 limits tau n m = h / 3 * sum_of
@@ -72,5 +74,5 @@ simpson2 limits tau n m = h / 3 * sum_of
           steps = take (n `div` 2) [a limits, a limits + 2 * h..10000]
           gauss' a = gauss a m tau limits
           sum_of = foldr (
-              \a acc ->
-                  acc + (gauss' a) + (4 * (gauss' $ a + h) + (gauss' $ a + 2 * h))) 0 steps
+            \a acc ->
+                acc + (gauss' a) + (4 * (gauss' $ a + h) + (gauss' $ a + 2 * h))) 0 steps
