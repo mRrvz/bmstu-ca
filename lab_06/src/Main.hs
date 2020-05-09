@@ -1,4 +1,5 @@
 import System.IO
+import Text.Printf
 import Differentation
 
 f :: [Double]
@@ -9,8 +10,9 @@ x = [1..6]
 
 main :: IO ()
 main = do
-    putStr "Left side: " >> print (leftSide f 1)
-    putStr "Center:" >> print (centerDiff f 1)
-    putStr "Runge: " >> print (rungeCenter f 1 1)
-    putStr "Alignment variables: " >> print (alignment f x 1)
-    putStr "Second derivative: " >> print (differential2 f 1)
+    putStrLn "!!! Results are not balanced (by x value) !!!"
+    putStr "\nLeft side: " >> mapM_ (printf "%.4f ") (leftSide f 1)
+    putStr "\nCenter: " >> mapM_ (printf "%.4f ") (centerDiff f 1)
+    putStr "\nRunge: " >> mapM_ (printf "%.4f ") (rungeCenter f 1 1)
+    putStr "\nAlignment variables: " >> mapM_ (printf "%.4f ") (alignment f x 1)
+    putStr "\nSecond derivative: " >> mapM_ (printf "%.4f ") (differential2 f 1)
