@@ -12,7 +12,7 @@
 | [№3. Интерполяция сплайном](https://github.com/mRrvz/bmstu-ca/tree/master/lab_03) | ✅ |
 | [№4. Среднеквартичное приближение](https://github.com/mRrvz/bmstu-ca/tree/master/lab_04)  | ✅ |
 | [№5. Численное интегрирование](https://github.com/mRrvz/bmstu-ca/tree/master/lab_05) | ✅ |
-| [№6. Численное дифференцирование](https://github.com/mRrvz/bmstu-ca/tree/master/lab_06) | ⛔ |
+| [№6. Численное дифференцирование](https://github.com/mRrvz/bmstu-ca/tree/master/lab_06) | ✅ |
 
 
 
