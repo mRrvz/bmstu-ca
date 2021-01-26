@@ -22,8 +22,8 @@ initialConditions :: String -> TableXY
 initialConditions findType
     | findType == "back-intpol" = sortOn fst $ zip ys xs
     | otherwise = zip xs ys
-    where xs = [2, 3, 4]
-          ys = [6.25, 11.25, 18.25]
+    where xs = [1..3]
+          ys = [x * x | x <- xs]
 
 slice :: TableXY -> Int -> Int -> TableXY
 slice table n pos = take n $ drop pos table

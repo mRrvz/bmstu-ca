@@ -1,0 +1,257 @@
+% !TeX document-id = {c68f4be8-c497-43e0-82df-e9ebfbea9577}
+% !TeX TXS-program:pdflatex = pdflatex -synctex=1 -interaction=nonstopmode --shell-escape %.tex
+% новая команда \RNumb для вывода римских цифр
+\documentclass[a4paper,12pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm} 
+\usepackage{caption}
+\usepackage{misccorr}
+\usepackage[noadjust]{cite}
+\usepackage{cmap} 
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english, russian]{babel}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{verbatim}
+\usepackage{makeidx}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{esint}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\lstset{basicstyle=\fontsize{10}{10}\selectfont,breaklines=true}
+
+\newcommand{\specchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+\newcommand{\specsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
+\newcommand{\specsubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
+\newcommand{\RNumb}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+\newcommand{\jj}{\righthyphenmin=20 \justifying}
+
+
+% геометрия
+\geometry{pdftex, left = 2cm, right = 2cm, top = 2.5cm, bottom = 2.5cm}
+
+\setcounter{tocdepth}{4} % фикс переноса 
+\righthyphenmin = 2
+\tolerance = 2048
+
+\begin{document}
+\thispagestyle{empty}
+
+\noindent \begin{minipage}{0.15\textwidth}
+	\includegraphics[width=\linewidth]{b_logo}
+\end{minipage}
+\noindent\begin{minipage}{0.9\textwidth}\centering
+	\textbf{Министерство науки и высшего образования Российской Федерации}\\
+	\textbf{Федеральное государственное бюджетное образовательное учреждение высшего образования}\\
+	\textbf{«Московский государственный технический университет имени Н.Э.~Баумана}\\
+	\textbf{(национальный исследовательский университет)»}\\
+	\textbf{(МГТУ им. Н.Э.~Баумана)}
+\end{minipage}
+
+\noindent\rule{18cm}{3pt}
+\newline\newline
+\noindent ФАКУЛЬТЕТ $\underline{\text{«Информатика и системы управления»}}$ \newline\newline
+\noindent КАФЕДРА $\underline{\text{«Программное обеспечение ЭВМ и информационные технологии»}}$\newline\newline\newline\newline\newline\newline\newline
+
+
+\begin{center}
+	\noindent\begin{minipage}{1.3\textwidth}\centering
+	\Large\textbf{  Лабораторная работа № 6}\newline
+	\textbf{по дисциплине "Вычислительные алгоритмы"}\newline\newline\newline
+	\end{minipage}
+\end{center}
+
+\noindent\textbf{Тема} $\underline{\text{Численное дифференцирование.}}$\newline\newline
+\noindent\textbf{Студент} $\underline{\text{Романов А.В.}}$\newline\newline
+\noindent\textbf{Группа} $\underline{\text{ИУ7-43Б}}$\newline\newline
+\noindent\textbf{Оценка (баллы)} $\underline{\text{~~~~~~~~~~~~~~~~~~~~~~~~~~~}}$\newline\newline
+\noindent\textbf{Преподаватель} $\underline{\text{Градов В.М.}}$\newline
+
+\begin{center}
+	\vfill
+	Москва~---~\the\year
+~г.
+\end{center}
+\clearpage
+\section{Тема работы}
+
+\noindent Построение и программная реализация алгоритмов численного дифференцирования.
+\section{Цель работы}
+
+\noindent Получение навыков построения алгоритма вычисления производных от сеточных функций.
+\section{Задание}
+\noindent Задана табличная функция. Имеетя информация, что законамерность, представленная этой таблицей, может быть описана формулой:
+
+$$ y = \frac{a_{0}x}{a_{1}+a_{2}x}$$\newline
+
+\noindent Вычислить значение производных и занести их в столбцы таблицы.\newline
+
+\noindent \textbf{1 столбец} -- односторонняя разностная производная. \newline
+\textbf{2 столбец} -- центральная разностная производная. \newline
+\textbf{3 столбец} -- вторая формула Рунге с использованием односторонней производной. \newline
+\textbf{4 столбец} -- введены выравнивающие переменные. \newline
+\textbf{5 столбец} -- вторая разностная производная. \newline
+
+\noindent 
+
+\noindent
+
+\section{Описание алгоритма}
+	
+\noindent Используя ряд Тейлора, можно получить разностные формулы для вычисления производных:
+
+$$ y'_{n} = \frac{y_{n + 1} - y_{n}}{h} $$
+
+\noindent или
+
+$$ y'_{n} = \frac{y_{n} - y_{n - 1}}{h} $$
+
+\noindent Первое выражение -- \textbf{правая} разностная производная, второе -- \textbf{левая} разностная производная.
+\noindent Эти формулы имею самый низкий, первый порядок точности.\newline
+
+\noindent Таким же образом, можно получить \textbf{центральную} формулу:
+
+$$ y'_{n} = \frac{y_{n + 1} - y_{n - 1}}{2h} $$
+
+\noindent Эта формула имеет второй порядок точности.\newline
+
+\noindent Используя ряд Тейлора, таким же образом можно полуичить \textbf{разностный аналог второй производной}:
+
+$$ y''_{n} = \frac{y_{n - 1} - 2 y_{n} + y_{n + 1}}{h^2} $$
+
+
+\noindent Используя преобразования в рядах Тейлора, можем прийти к \textbf{первой формуле Рунге}: \newline
+
+$$ \psi(x)h^p = \frac{\Phi(h) - \Phi(mh)}{m^p - 1} $$
+
+\noindent Аналогично, можем получить \textbf{вторую формулу Рунге}:\newline
+
+$$ \Omega = \Phi(h) + \frac{\Phi(h) - \Phi(mh)}{m^p - 1} $$\newline
+
+\noindent Стоит отметить, что формулы Рунге справедливы не только для операции дифференцирования, но и для любых других приближенных вычислений. Важно, чтобы погрешность применяемых формул имела вид $R = \psi(x)h^p$\newline
+
+\noindent Так же, существует метод ввода так называемых \textbf{выравнивающих переменных}. При удачном подборе этих переменных исходная кривая может быть преобразована в прямую линию, производная от которой вычисляется точно по самым простым формулам. Пусть задана функция $y(x)$, и введены выравнивающие переменные $\xi = \xi(x)$ и $\eta = \eta(y)$. Тогда, возврат к заданным переменным осуществляется этой формулой:
+
+$$ y'_{x} = \frac{\eta_{\xi}'\;\xi_{x}'}{\eta'_{y}} $$
+
+\noindent А $\eta_{\xi}'$ можно вычислить по любой односторонней формуле.
+
+\clearpage % разрыв страницы
+
+\section{Результаты}
+
+\begin{center}
+	\begin{tabular}{ | l | l | l | l | l | l | l | p{1cm} |}
+		\hline
+		$x$ & $y$ & 1 & 2 & 3 & 4 & 5 \\ \hline
+		1 & 0.571 & -     & -     & -     & 0.409 & - \\ \hline
+		2 & 0.889 & 0.318 & 0.260 & -     & 0.247 & -0.116 \\ \hline
+		3 & 1.091 & 0.201 & 0.171 & 0.144 & 0.165 & -0.061 \\ \hline
+		4 & 1.231 & 0.140 & 0.121 & 0.109 & 0.117 & -0.038 \\ \hline
+		5 & 1.333 & 0.102 & 0.091 & 0.083 & 0.089 & -0.023 \\ \hline
+		6 & 1.412 & 0.078 & -     & 0.067 & -     & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+""\newline
+
+\noindent В \textbf{первом столбце} использовал левостороннюю формулу, поэтому нет значения 
+
+\noindent при х = 1. Как и ожидалось, точность $O(h)$.
+
+\noindent \textbf{Второй столбец} -- центральная формула. Точность уже выше, чем в первом столбце - $O(h^2)$
+
+\noindent \textbf{Третий столбец} -- вторая формула рунге с использованием односторонней производной (брал слева).
+
+\noindent \textbf{Четвертый столбец} -- введены выравнивающие переменные. Так как неизвестны параметры, нет возможности точно оценить погрешность, но предположу, что она  минимальна.  Итоговая формула: 
+
+$$ y'_{x} = \frac{\eta_{\xi}'\;\xi_{x}'}{\eta'_{y}} = \frac{\eta_{\xi}'\;y^2}{x^2} $$
+
+\noindent $\eta_{\xi}'$ искал с помощью правосторонней формулы: 
+
+$$\frac{-\frac{1}{y_{i + 1}} + \frac{1}{y_{i}}}{-\frac{1}{x_{i + 1}} + \frac{1}{x_{i}}} $$
+
+\noindent \textbf{Пятый столбец} - вторая разностная производная.
+
+\section{Ответы контрольные вопросы}
+\noindent\textbf{1.} Получить формулу порядка точности $O(h^2) $ для первой разностной производной $y'_{N}$ в крайнем правом узле $x_{N}$ .\newline
+
+\noindent Имеем: 
+
+$$ y_{N - 1} = y_{N} - h y_{n}' + \frac{h^2}{2!}y_{N}'' - \frac{h^3}{3!}y_{N}'''...$$
+
+$$ y_{N - 2} = y_{N} - 2h y_{n}' + \frac{4h^2}{2!}y_{N}'' - \frac{8h^3}{3!}y_{N}'''...$$
+
+\noindent Отсюда получаем:
+
+$$ y_{N}' = \frac{3y_{N} - 4y_{N - 1} + y_{N - 2}}{2h} + \frac{h^2}{3}y_{N}''' $$
+
+$$ y_{N}' = \frac{3y_{N} - 4y_{N - 1} + y_{N - 2}}{2h} + O(h^2)$$
+
+\noindent\textbf{2.}  Получить формулу порядка точности $O(h^2) $ для второй разностной производной $y''_{0}$ в крайнем левом узле $x_{0}$. \newline
+
+\noindent Имеем:
+
+$$ y_{1} = y_{0} + h y_{0}' + \frac{h^2}{2!}y_{0}'' + \frac{h^3}{3!}y_{0}'''...$$
+
+$$ y_{2} = y_{0} + 2h y_{0}' + \frac{4h^2}{2!}y_{0}'' + \frac{8h^3}{3!}y_{0}'''...$$
+
+\noindent Отсюда получаем: 
+
+$$ y_{0}'' = \frac{y_{0} - 2y_{1} + y_{2}}{h^2} - hy_{0}''' $$
+
+$$ y_{0}'' = \frac{y_{0} - 2y_{1} + y_{2}}{h^2} + O(h^2)$$
+
+
+\noindent\textbf{3.} Используя 2-ую формулу Рунге, дать вывод выражения (9) из Лекции №7 для первой производной $y'_{0}$ в левом крайнем узле \newline
+
+$$ \Phi(h) + \frac{\Phi(h) - \Phi(mh)}{m^p - 1} + O(h^{p + 1})= $$
+
+$$ = 2\Phi(h) - \Phi(2h) + O(h^2) = 2(\frac{y_{1} - y_{0}}{h} - \frac{y_{0}}{2}y_{0}'') - $$
+
+$$ - (\frac{y_{2} - y_{0}}{2h} - hy_{0}'') + O(h^2) = \frac{4y_{1} - 3y_{0} - y_{2}}{2h} + O(h^2)$$\newline
+
+\noindent $\Phi(h)$ и $\Phi(2h)$ выведены из рядов Тейлора.\newline
+
+\noindent\textbf{4.} Любым способом из Лекций №7, 8 получить формулу порядка точности $O(h^3)$ для первой разностной производной $y'_{0}$ в крайнем левом узле $x_{0}$ \newline
+
+\noindent Имеем: 
+
+$$ y_{1} = y_{0} + hy_{0}' + \frac{h^2}{2}y_{0}''+\frac{h^3}{3!}y_{0}'''...$$
+
+$$ y_{2} = y_{0} + 2hy_{0}' + \frac{(2h)^2}{2!}y_{0}''+\frac{(2h)^3}{3!}y_{0}'''...$$
+
+$$ y_{3} = y_{0} + 3hy_{0}' + \frac{(3h)^2}{2!}y_{0}''+\frac{(3h)^3}{3!}y_{0}'''...$$
+
+\noindent Выражая $y_{0}'$ и $y_{0}''$, получаем: 
+
+$$ y_{0}' = \frac{4y_{1} -3y_{0} - y_{2}}{2h} + \frac{h^2}{3}y_{0}'''$$
+
+\clearpage
+
+\noindent Теперь выразим $y_{0}'''$ и подставим:
+
+$$ y_{0}' = \frac{108y_{1} - 85y_{0} - 27y_{2} + 4y_{3}}{66h} - \frac{3h^2}{11}y_{0}''' $$
+
+$$ y_{0}' = \frac{108y_{1} - 85y_{0} - 27y_{2} + 4y_{3}}{66h} + O(h^3) $$
+
+
+\section{Код программы}
+\noindent\textbf{Файл Main.hs:}
+\lstinputlisting[language=Haskell]{../../src/Main.hs}
+
+\noindent\textbf{\newline Файл Differentation.hs:}
+\lstinputlisting[language=Haskell]{../../src/Differentation.hs}
+
+\end{document}
